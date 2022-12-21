@@ -1,6 +1,6 @@
 # Reverse Proxy Setup Guide
 
-It is recommended to run `nostr-rs-relay` behind a reverse proxy such
+It is recommended to run `nostr-relay-ln` behind a reverse proxy such
 as `haproxy` or `nginx` to provide TLS termination.  Simple examples
 of `haproxy` and `nginx` configurations are documented here.
 
@@ -9,7 +9,7 @@ of `haproxy` and `nginx` configurations are documented here.
 Assumptions:
 
 * HAProxy version is `2.4.10` or greater (older versions not tested).
-* Hostname for the relay is `relay.example.com`.
+* Hostname for the relay is `nostr.example.com`.
 * Your relay should be available over wss://relay.example.com
 * Your (NIP-11) relay info page should be available on https://relay.example.com
 * SSL certificate is located in `/etc/certs/example.com.pem`.
@@ -57,7 +57,7 @@ disable HTTP/2 (`h2`), or upgrade HAProxy.
 Assumptions:
 
 * `Nginx` version is `1.18.0` (other versions not tested).
-* Hostname for the relay is `relay.example.com`.
+* Hostname for the relay is `nostr.example.com`.
 * SSL certificate and key are located at `/etc/letsencrypt/live/relay.example.com/`.
 * Relay is running on port `8080`.
 
@@ -65,8 +65,8 @@ Assumptions:
 http {
     server {
         listen 443 ssl;
-        server_name relay.example.com;
-        ssl_certificate /etc/letsencrypt/live/relay.example.com/fullchain.pem;
+        server_name nostr.example.com;
+        ssl_certificate /etc/letsencrypt/live/nostr.example.com/fullchain.pem;
         ssl_certificate_key /etc/letsencrypt/live/relay.example.com/privkey.pem;
         ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
         ssl_ciphers HIGH:!aNULL:!MD5;

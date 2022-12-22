@@ -240,3 +240,35 @@ You may want to consider hardening your VM against common attack types by perfor
 
 - Hardning the SSH server
 - Installing a firewall
+
+You may want to restrict publishing on your relay to NIP-05 verified users of a particular domain. To do so:
+
+### 1. Edit Relay Configuration
+
+To make changes to the relay, we need to edit the [`config.toml`](config.toml) file. To make the changes required, run:
+
+`sudo nano /nostr-data/config.toml`
+
+### 2. Edit `[verified_users]` section
+
+Locate the `[verified_users]` section towards the bottom of the file and make the following changes:
+
+- Change `mode = "passive"` to `mode = "enabled"`
+- Change `#domain_whitelist = ["example.com"]` to `domain_whitelist = ["nostr.example.com"]`
+  - Note the removal of the `#` at the beginning of the line
+
+Save your changes by pressing `Ctrl`+`X`, enter `Y`, then `Return`.
+
+### 3. Restart Docker Container
+
+You'll need to locate the ID of your docker container to restart it. First run:
+
+`sudo docker ps`
+
+and then copy the ID to your clipboard.
+
+Next run
+
+`sudo docker restart CONTAINER_ID` 
+
+replacing `CONTAINER_ID` with the ID of your Docker container.

@@ -30,7 +30,12 @@ Using a virtual machine allows you to scale your relay as the amount of data and
 
 ## DNS
 
-Login to your DNS provider and set an A record for `nostr.example.com` to point to the public IP address of the VM you just created.
+Login to your DNS provider and set an A record for `nostr.example.com` to point to the public IP address of the VM you just created. You can confirm the DNS propogation is successful by running:
+
+```console
+$ ping nostr.example.com
+123.456.789.100
+```
 
 ## Installation and configuration
 

@@ -224,6 +224,16 @@ $ select count(distinct author) from event;
 1
 ```
 
+## Publicly announce your relay [optional]
+
+To publicly announce your relay, you can add your relay to the list in `Relays.Yaml` and then submit a pull-request:
+
+https://github.com/dskvr/nostr-watch
+
+Once merged, your relay should appear here:
+
+[https://nostr.watch](https://nostr.watch)
+
 ## Next Steps
 
 You may want to consider hardening your VM against common attack types by performing actions such as:

@@ -1,14 +1,8 @@
-# [nostr-rs-relay](https://git.sr.ht/~gheartsfield/nostr-rs-relay)
+# nostr-relay-ln
 
-This is a [nostr](https://github.com/nostr-protocol/nostr) relay,
-written in Rust.  It currently supports the entire relay protocol, and
-persists data with SQLite.
+This is a [nostr](https://github.com/nostr-protocol/nostr) relay, written in Rust. It currently supports the entire relay protocol, and persists data with SQLite.
 
-The project master repository is available on
-[sourcehut](https://sr.ht/~gheartsfield/nostr-rs-relay/), and is
-mirrored on [GitHub](https://github.com/scsibug/nostr-rs-relay).
-
-[![builds.sr.ht status](https://builds.sr.ht/~gheartsfield/nostr-rs-relay/commits/master.svg)](https://builds.sr.ht/~gheartsfield/nostr-rs-relay/commits/master?)
+This is a fork of [https://github.com/scsibug/nostr-rs-relay](https://github.com/scsibug/nostr-rs-relay).
 
 ## Features
 
@@ -30,58 +24,11 @@ mirrored on [GitHub](https://github.com/scsibug/nostr-rs-relay).
 - [x] NIP-22: [Event `created_at` limits](https://github.com/nostr-protocol/nips/blob/master/22.md) (_future-dated events only_)
 - [x] NIP-26: [Event Delegation](https://github.com/nostr-protocol/nips/blob/master/26.md)
 
-## Quick Start
+## Hardware / Virtual Machine
 
-The provided `Dockerfile` will compile and build the server
-application.  Use a bind mount to store the SQLite database outside of
-the container image, and map the container's 8080 port to a host port
-(7000 in the example below).
+Using a virtual machine allows you to scale your relay as the amount of data and users increases with time. For a private-ish, friends/family relay, you can start with an x64 based architecture, 2 GB RAM, 30 GB SSD. YMMV. Make sure you choose Ubuntu Server 20.04 or 22.04. Generate a SSH keypair file and save it locally. Ensure that the server is available via SSH (22), HTTP (80), and HTTPS (443).
 
-The examples below start a rootless podman container, mapping a local
-data directory and config file.
-
-```console
-$ podman build -t nostr-rs-relay .
-
-$ mkdir data
-
-$ podman unshare chown 100:100 data
-
-$ podman run -it --rm -p 7000:8080 \
-  --user=100:100 \
-  -v $(pwd)/data:/usr/src/app/db:Z \
-  -v $(pwd)/config.toml:/usr/src/app/config.toml:ro,Z \
-  --name nostr-relay nostr-rs-relay:latest
-
-Nov 19 15:31:15.013  INFO nostr_rs_relay: Starting up from main
-Nov 19 15:31:15.017  INFO nostr_rs_relay::server: listening on: 0.0.0.0:8080
-Nov 19 15:31:15.019  INFO nostr_rs_relay::server: db writer created
-Nov 19 15:31:15.019  INFO nostr_rs_relay::server: control message listener started
-Nov 19 15:31:15.019  INFO nostr_rs_relay::db: Built a connection pool "event writer" (min=1, max=4)
-Nov 19 15:31:15.019  INFO nostr_rs_relay::db: opened database "/usr/src/app/db/nostr.db" for writing
-Nov 19 15:31:15.019  INFO nostr_rs_relay::schema: DB version = 0
-Nov 19 15:31:15.054  INFO nostr_rs_relay::schema: database pragma/schema initialized to v7, and ready
-Nov 19 15:31:15.054  INFO nostr_rs_relay::schema: All migration scripts completed successfully.  Welcome to v7.
-Nov 19 15:31:15.521  INFO nostr_rs_relay::db: Built a connection pool "client query" (min=4, max=128)
-```
-
-Use a `nostr` client such as
-[`noscl`](https://github.com/fiatjaf/noscl) to publish and query
-events.
-
-```console
-$ noscl publish "hello world"
-Sent to 'ws://localhost:8090'.
-Seen it on 'ws://localhost:8090'.
-$ noscl home
-Text Note [81cf...2652] from 296a...9b92 5 seconds ago
-  hello world
-```
-
-A pre-built container is also available on DockerHub:
-https://hub.docker.com/r/scsibug/nostr-rs-relay
-
-## Configuration
+## Installation
 
 The sample [`config.toml`](config.toml) file demonstrates the
 configuration available to the relay.  This file is optional, but may

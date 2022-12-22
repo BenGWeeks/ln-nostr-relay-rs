@@ -72,14 +72,14 @@ $ nginx -V
 $ certbot --version
 ```
 
-### 3. Setup Docker GPG key
+### 4. Setup Docker GPG key
 
 ```console
 $ sudo mkdir -p /etc/apt/keyrings
 $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 ```
 
-### 4. Setup `apt` Docker repository
+### 5. Setup `apt` Docker repository
 
 ```
 $ echo \
@@ -87,7 +87,7 @@ $ echo \
   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 ```
 
-### 5. Install Docker
+### 6. Install Docker
 
 To setup Docker, run the following:
 
@@ -102,14 +102,14 @@ To check Docker is installed correctly run:
 $ docker --version
 ```
 
-### 6. Make user to own directory
+### 7. Make user to own directory
 
 ```console
 $ sudo groupadd --gid 1000 appuser
 $ sudo useradd --uid 1000 --gid appuser appuser
 ```
 
-### 7. Make directory for relay database to live
+### 8. Make directory for relay database to live
 
 ```console
 $ sudo mkdir /nostr-data
@@ -117,7 +117,7 @@ $ sudo mkdir /nostr-data/data
 $ sudo chown -R 1000:1000 /nostr-data
 ```
 
-### 8. Configure the relay
+### 9. Configure the relay
 
 To make changes to the relay, we need to edit the [`config.toml`](config.toml) file. This file gives options include rate-limiting, event size limits, and network address settings. To make the changes required, run:
 
@@ -136,7 +136,7 @@ port = 7000
 relay_url = "wss://nostr.example.com/"
 ```
 
-### 9. Start the relay
+### 10. Start the relay
 
 To start the relay, run the following command:
 
@@ -157,7 +157,7 @@ curl localhost:7000
 
 You should see `Please use a Nostr client to connect`.
 
-### 10. Configure reverse proxy
+### 11. Configure reverse proxy
 
 To make changes to default Nginx configuration, run:
 
@@ -187,7 +187,7 @@ Now restart Nginx by running:
 $ sudo systemctl restart nginx
 ```
 
-### 11. Setup SSL
+### 12. Setup SSL
 
 Request an SSL certificate from letsencrypt/certbot by running the following (replace nostr.example.com with yours):
 
@@ -196,17 +196,17 @@ $ sudo snap install --classic certbot
 $ sudo certbot --nginx -d nostr.example.com
 ```
 
-### 12. Test the WebSocket and HTTPS connections
+### 13. Test the WebSocket and HTTPS connections
 
 To test the WebSocket connection, navigate to [https://websocketking.com](https://websocketking.com),and enter `wss://nostr.example.com` (replacing with your sub-domain details), and click `Connect`. You should see you are successfully connected.
 
 To test the HTTPS connection, navigate to `https://nostr.example.com` (replacing with your sub-domain details). It should say `Please use a Nostr client to connect`.
 
-### 13. Add your relay to your client
+### 14. Add your relay to your client
 
 Finally, in your Nostr client, add your newly created relay `wss://nostr.example.com` (replacing with your sub-domain details). Submit some posts :-)
 
-### 14. Query your relay
+### 15. Query your relay
 
 To query the relay, we need to install SQLite3, by running:
 

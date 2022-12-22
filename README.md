@@ -58,7 +58,7 @@ $ sudo apt upgrade -y
 
 ### 3. Install required dependencies
 
-To install the required dependencies, such as the `nginx` web server, `certbot` to generate SSL certificates, `python3-certbot-nginx` to serve HTTPS content, `apt-transport-https` to xxxxxxxxx, `ca-certificates` to be a Certificate Authority on the Ubuntu server, `curl` to be able to transmit data using various protocols using the command line, and `software-properties-common` to yyyyyyyyyy.
+To install the required dependencies, such as the `nginx` web server, `certbot` to generate SSL certificates, `python3-certbot-nginx` to serve HTTPS content, `apt-transport-https` to allow for the use of repositories accessed via the HTTP Secure protoco, `ca-certificates` to be a Certificate Authority on the Ubuntu server, `curl` to be able to transmit data using various protocols using the command line, and `software-properties-common` to allow us to easily manage distribution and independent software vendor software sources.
 
 ```console
 $ sudo apt install -y nginx certbot python3-certbot-nginx
@@ -72,22 +72,22 @@ $ nginx -V
 $ certbot --version
 ```
 
-### 4. Setup Docker GPG key
+### 4. Setup Docker
+
+As Ubuntu desn't ship with Docker's package repository, we need to add it. Packages repositories and signed with with GPG, we first need to make a directory to store pub keys, then import Dockers.
 
 ```console
 $ sudo mkdir -p /etc/apt/keyrings
 $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 ```
 
-### 5. Setup `apt` Docker repository
+We then need to put the PGP key we downloaded, and put it in the right place by running:
 
 ```
 $ echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 ```
-
-### 6. Install Docker
 
 To setup Docker, run the following:
 
@@ -102,14 +102,14 @@ To check Docker is installed correctly run:
 $ docker --version
 ```
 
-### 7. Make user to own directory
+### 5. Make user to own directory
 
 ```console
 $ sudo groupadd --gid 1000 appuser
 $ sudo useradd --uid 1000 --gid appuser appuser
 ```
 
-### 8. Make directory for relay database to live
+### 6. Make directory for relay database to live
 
 ```console
 $ sudo mkdir /nostr-data
@@ -117,7 +117,7 @@ $ sudo mkdir /nostr-data/data
 $ sudo chown -R 1000:1000 /nostr-data
 ```
 
-### 9. Configure the relay
+### 7. Configure the relay
 
 To make changes to the relay, we need to edit the [`config.toml`](config.toml) file. This file gives options include rate-limiting, event size limits, and network address settings. To make the changes required, run:
 
@@ -136,7 +136,7 @@ port = 7000
 relay_url = "wss://nostr.example.com/"
 ```
 
-### 10. Start the relay
+### 8. Start the relay
 
 To start the relay, run the following command:
 
@@ -158,7 +158,7 @@ curl localhost:7000
 
 You should see `Please use a Nostr client to connect`.
 
-### 11. Configure reverse proxy
+### 9. Configure reverse proxy
 
 To make changes to default Nginx configuration, run:
 
@@ -188,26 +188,25 @@ Now restart Nginx by running:
 $ sudo systemctl restart nginx
 ```
 
-### 12. Setup SSL
+### 10. Setup SSL
 
-Request an SSL certificate from letsencrypt/certbot by running the following (replace nostr.example.com with yours):
+We can request an SSL certificate from letsencrypt/certbot by running the following (replace `nostr.example.com` with yours):
 
 ```console
-$ sudo snap install --classic certbot
 $ sudo certbot --nginx -d nostr.example.com
 ```
 
-### 13. Test the WebSocket and HTTPS connections
+### 11. Test the WebSocket and HTTPS connections
 
 To test the WebSocket connection, navigate to [https://websocketking.com](https://websocketking.com),and enter `wss://nostr.example.com` (replacing with your sub-domain details), and click `Connect`. You should see you are successfully connected.
 
 To test the HTTPS connection, navigate to `https://nostr.example.com` (replacing with your sub-domain details). It should say `Please use a Nostr client to connect`.
 
-### 14. Add your relay to your client
+### 12. Add your relay to your client
 
 Finally, in your Nostr client, add your newly created relay `wss://nostr.example.com` (replacing with your sub-domain details). Submit some posts :-)
 
-### 15. Query your relay
+### 13. Query your relay
 
 To query the relay, we need to install SQLite3, by running:
 

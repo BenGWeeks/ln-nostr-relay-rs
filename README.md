@@ -38,7 +38,23 @@ To connect the the machine, run the following SSH command (on Windows, by openin
 $ ssh -i <SSH-keypair-filename>.pem <SSH-keypair-name>@<IP-address>
 ```
 
+### 2. Update system packages
 
+To update your Ubuntu system packages, run the following:
+
+```console
+$ sudo apt update
+$ sudo apt upgrade -y
+```
+
+### 3. Install required dependencies
+
+To install the required dependencies, such as `Nginx` web server, `certbot`to generate SSL certificates, `python3-certbot-nginx` to server HTTPS content, `apt-transport-https` to xxxxxxxxx, `ca-certificates` to be a Certificate Authority on the Ubuntu server, `curl` to be able to transmit data using various protocols using the command line, and `software-properties-common` to yyyyyyyyyy.
+
+```console
+sudo apt install -y nginx certbot python3-certbot-nginx
+sudo apt install apt-transport-https ca-certificates curl software-properties-common
+```
 
 The sample [`config.toml`](config.toml) file demonstrates the
 configuration available to the relay.  This file is optional, but may

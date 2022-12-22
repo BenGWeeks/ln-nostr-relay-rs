@@ -146,6 +146,7 @@ $ sudo docker run -it -d \
  --mount src=/nostr-data/config.toml,target=/usr/src/app/config.toml,type=bind \
  --mount src=/nostr-data/data,target=/usr/src/app/db,type=bind \
  --restart unless-stopped \
+ --pull always \
  scsibug/nostr-rs-relay:latest
 ```
 

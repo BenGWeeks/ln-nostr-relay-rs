@@ -241,6 +241,9 @@ You may want to consider hardening your VM against common attack types by perfor
 - Hardning the SSH server
 - Installing a firewall
 
+
+## NIP-05 Verified Relay
+
 You may want to restrict publishing on your relay to NIP-05 verified users of a particular domain. To do so:
 
 ### 1. Edit Relay Configuration

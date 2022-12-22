@@ -142,7 +142,7 @@ To start the relay, run the following command:
 
 ```console
 $ sudo docker run -it -d \
- -p 7000:7000 \
+ -p 127.0.0.1:7000:7000 \
  --mount src=/nostr-data/config.toml,target=/usr/src/app/config.toml,type=bind \
  --mount src=/nostr-data/data,target=/usr/src/app/db,type=bind \
  --restart unless-stopped \

@@ -58,7 +58,7 @@ $ sudo apt upgrade -y
 
 ### 3. Install required dependencies
 
-To install the required dependencies, such as the `nginx` web server, `certbotto` to generate SSL certificates, `python3-certbot-nginx` to serve HTTPS content, `apt-transport-https` to xxxxxxxxx, `ca-certificates` to be a Certificate Authority on the Ubuntu server, `curl` to be able to transmit data using various protocols using the command line, and `software-properties-common` to yyyyyyyyyy.
+To install the required dependencies, such as the `nginx` web server, `certbot` to generate SSL certificates, `python3-certbot-nginx` to serve HTTPS content, `apt-transport-https` to xxxxxxxxx, `ca-certificates` to be a Certificate Authority on the Ubuntu server, `curl` to be able to transmit data using various protocols using the command line, and `software-properties-common` to yyyyyyyyyy.
 
 ```console
 $ sudo apt install -y nginx certbot python3-certbot-nginx

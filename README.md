@@ -26,9 +26,19 @@ This is a fork of [https://github.com/scsibug/nostr-rs-relay](https://github.com
 
 ## Hardware / Virtual Machine
 
-Using a virtual machine allows you to scale your relay as the amount of data and users increases with time. For a private-ish, friends/family relay, you can start with an x64 based architecture, 2 GB RAM, 30 GB SSD. YMMV. Make sure you choose Ubuntu Server 20.04 or 22.04. Generate a SSH keypair file and save it locally. Ensure that the server is available via SSH (22), HTTP (80), and HTTPS (443).
+Using a virtual machine allows you to scale your relay as the amount of data and users increases with time. For a private-ish, friends/family relay, you can start with an x64 based architecture, 2 GB RAM, 30 GB SSD. Make sure you choose Ubuntu Server 20.04 or 22.04. Generate a SSH keypair file, make a note of the name, and save it locally. Ensure that the server is available via SSH (22), HTTP (80), and HTTPS (443).
 
 ## Installation
+
+### 1. Connect to the server via SSH
+
+To connect the the machine, run the following SSH command (on Windows, by opening a command window as an Administrator, and changing directory to where you saved the SSH keypair file) and run:
+
+```console
+$ ssh -i <SSH-keypair-filename>.pem <SSH-keypair-name>@<IP-address>
+```
+
+
 
 The sample [`config.toml`](config.toml) file demonstrates the
 configuration available to the relay.  This file is optional, but may

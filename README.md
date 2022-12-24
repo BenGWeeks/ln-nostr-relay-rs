@@ -143,10 +143,10 @@ port = 7000
 relay_url = "wss://nostr.example.com/"
 ```
 
-If, for example you want only verified users using your relay, locate the `[verified_users]` section towards the bottom of the file and make the following changes (note the removal of the `#` at the beginning of the line):
+If, for example you want only verified users using your relay, locate the `[verified_users]` section towards the bottom of the file and make the following changes:
 
 - Change `mode = "passive"` to `mode = "enabled"`
-- Change `#domain_whitelist = ["example.com"]` to `domain_whitelist = ["nostr.example.com"]`
+- Change `#domain_whitelist = ["example.com"]` to `domain_whitelist = ["nostr.example.com"]` (note the removal of the `#` at the beginning of the line)
 
 Save your changes by pressing `Ctrl`+`X`, enter `Y`, then `Return`.
 

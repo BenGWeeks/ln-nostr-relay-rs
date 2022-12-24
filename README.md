@@ -4,7 +4,7 @@ This is a [nostr](https://github.com/nostr-protocol/nostr) relay, written in Rus
 
 This is a fork of [https://github.com/scsibug/nostr-rs-relay](https://github.com/scsibug/nostr-rs-relay).
 
-The intention is that in the future, this work will implement Lightning integration for relays to earn micr-payments for posts and facilitate tips between users.
+The intention is that in the future, this fork will implement Lightning integration for relays to earn micr-payments for posts and facilitate tips between users.
 
 ## Features
 

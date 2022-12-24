@@ -67,9 +67,13 @@ $ sudo apt install apt-transport-https ca-certificates curl software-properties-
 
 To check the installation of some of the dependencies, run:
 
-```
+```console
 $ nginx -V
+nginx version: nginx/1.18.0 (Ubuntu)
+built with OpenSSL 1.1.1f  31 Mar 2020
+TLS SNI support enabled
 $ certbot --version
+certbot 1.32.2
 ```
 
 ### 4. Setup Docker
@@ -83,7 +87,7 @@ $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -
 
 We then need to put the PGP key we downloaded, and put it in the right place by running:
 
-```
+```console
 $ echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
@@ -100,6 +104,7 @@ To check Docker is installed correctly run:
 
 ```console
 $ docker --version
+Docker version 20.10.22, build 3a2c30b
 ```
 
 ### 5. Make user to own directory
@@ -135,6 +140,13 @@ mode = "passive"
 port = 7000
 relay_url = "wss://nostr.example.com/"
 ```
+
+If, for example you want only verified users using your relay, locate the `[verified_users]` section towards the bottom of the file and make the following changes (note the removal of the `#` at the beginning of the line):
+
+- Change `mode = "passive"` to `mode = "enabled"`
+- Change `#domain_whitelist = ["example.com"]` to `domain_whitelist = ["nostr.example.com"]`
+
+Save your changes by pressing `Ctrl`+`X`, enter `Y`, then `Return`.
 
 ### 8. Start the relay
 
@@ -182,6 +194,8 @@ server{
 }
 ```
 
+Save your changes by pressing `Ctrl`+`X`, enter `Y`, then `Return`.
+
 Now restart Nginx by running:
 
 ```console
@@ -208,7 +222,14 @@ Finally, in your Nostr client, add your newly created relay `wss://nostr.example
 
 ### 13. Query your relay
 
-To query the relay, we need to install SQLite3, by running:
+To determine the size of your database, you can do:
+
+```console
+$ wc -c /nostr-data/data/nostr.db
+392765440 /nostr-data/data/nostr.db
+```
+
+To query the database itself, we need to install SQLite3, by running:
 
 ```console
 $ sudo apt install sqlite3
@@ -218,11 +239,39 @@ You can then query your relay, by running commands such as:
 
 ```console
 $ sqlite3 /nostr-data/data/nostr.db
+$ .tables
+event              tag                user_verification
+$ pragma table_info(event);
+0|id|INTEGER|0||1
+1|event_hash|BLOB|1||0
+2|first_seen|INTEGER|1||0
+3|created_at|INTEGER|1||0
+4|author|BLOB|1||0
+5|delegated_by|BLOB|0||0
+6|kind|INTEGER|1||0
+7|hidden|INTEGER|0||0
+8|content|TEXT|1||0
+$ pragma table_info(tag);
+0|id|INTEGER|0||1
+1|event_id|INTEGER|1||0
+2|name|TEXT|0||0
+3|value|TEXT|0||0
+4|value_hex|BLOB|0||0
+$ pragma table_info(user_verification);
+0|id|INTEGER|0||1
+1|metadata_event|INTEGER|1||0
+2|name|TEXT|1||0
+3|verified_at|INTEGER|0||0
+4|failed_at|INTEGER|0||0
+5|failure_count|INTEGER|0|0|0
 $ select count(*) from event;
 5
 $ select count(distinct author) from event;
 1
+$ select count(*) from event where kind = 1;
 ```
+
+Press `CTRL + Z` and `ENTER` to exit SQLite3.
 
 ## Publicly announce your relay [optional]
 
@@ -241,37 +290,17 @@ You may want to consider hardening your VM against common attack types by perfor
 - Hardning the SSH server
 - Installing a firewall
 
-
 ## NIP-05 Verified Relay
 
 You may want to restrict publishing on your relay to NIP-05 verified users of a particular domain. To do so:
 
-### 1. Edit Relay Configuration
+## Further configuration changes
 
-To make changes to the relay, we need to edit the [`config.toml`](config.toml) file. To make the changes required, run:
+Note: If you want to make further changes to those you made in Step 7, you'll need to locate the ID of your docker container to restart it and then restart it (replacing the ID with your container ID):
 
-`sudo nano /nostr-data/config.toml`
-
-### 2. Edit `[verified_users]` section
-
-Locate the `[verified_users]` section towards the bottom of the file and make the following changes:
-
-- Change `mode = "passive"` to `mode = "enabled"`
-- Change `#domain_whitelist = ["example.com"]` to `domain_whitelist = ["nostr.example.com"]`
-  - Note the removal of the `#` at the beginning of the line
-
-Save your changes by pressing `Ctrl`+`X`, enter `Y`, then `Return`.
-
-### 3. Restart Docker Container
-
-You'll need to locate the ID of your docker container to restart it. First run:
-
-`sudo docker ps`
-
-and then copy the ID to your clipboard.
-
-Next run
-
-`sudo docker restart CONTAINER_ID` 
-
-replacing `CONTAINER_ID` with the ID of your Docker container.
+```console
+$ sudo docker ps
+CONTAINER ID   IMAGE                           COMMAND                  CREATED      STATUS      PORTS                                                 NAMES
+45c85585b818   scsibug/nostr-rs-relay:latest   "/bin/sh -c './nostr…"   3 days ago   Up 3 days   0.0.0.0:7000->7000/tcp, :::7000->7000/tcp, 8080/tcp   agitated_darwin
+$ sudo docker restart 45c85585b818
+```
